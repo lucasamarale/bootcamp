@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const distPath = path.resolve(__dirname, '..', 'dist');
 
-// AUMENTAMOS O TIMEOUT DO TESTE PARA 60 SEGUNDOS
+// Aumenta o timeout do teste para 60 segundos
 test.setTimeout(60000); 
 
 test('Popup da extensão carrega e exibe o título correto', async () => {
@@ -19,19 +19,20 @@ test('Popup da extensão carrega e exibe o título correto', async () => {
     ],
   });
 
-  // --- CÓDIGO MAIS ROBUSTO PARA ENCONTRAR O SERVICE WORKER ---
-  // 1. Primeiro, tentamos encontrar o service worker se ele JÁ estiver rodando.
-  let serviceWorker = context.serviceWorkers().find(sw => sw.url().startsWith('chrome-extension://'));
+  // --- ESTE É O BLOCO DE CÓDIGO CORRIGIDO (MAIS ROBUSTO) ---
+  // 1. Espera pelo "target" do tipo "service_worker". Esta é a forma mais confiável.
+  const backgroundTarget = await context.waitForTarget(
+    (target) => target.type() === 'service_worker',
+    { timeout: 15000 } // Aumentar um pouco o timeout para o CI
+  );
 
-  // 2. Se ele ainda não apareceu (for undefined), NÓS ESPERAMOS por ele (com um timeout de 10s).
+  // 2. Pega o service worker a partir desse target.
+  const serviceWorker = await backgroundTarget.serviceWorker();
+
   if (!serviceWorker) {
-    serviceWorker = await context.waitForEvent('serviceworker', { timeout: 10000 });
+    throw new Error('Service Worker da extensão não foi encontrado (método robusto).');
   }
   // ---------------------------------------------------------
-
-  if (!serviceWorker) {
-    throw new Error('Service Worker da extensão não foi encontrado. Verifique src/background/background.js por erros.');
-  }
 
   const extensionId = serviceWorker.url().split('/')[2];
   const popupUrl = `chrome-extension://${extensionId}/src/popup/popup.html`;
