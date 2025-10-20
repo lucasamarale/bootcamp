@@ -19,16 +19,6 @@
   "permissions": [
     "storage",
     "alarms",
-    "notifications",
-    "identity" 
-  ],
-  "host_permissions": [
-    "https://generativelanguage.googleapis.com/"
-  ],
-  "oauth2": {
-    "client_id": "369673193518-mu638lhu8lutpp6k2kf5aieigae9qt13.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/calendar.events"
-    ]
-  }
+    "notifications"
+  ]
 }
