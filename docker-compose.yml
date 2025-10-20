@@ -1,0 +1,10 @@
+services:
+  e2e:
+    build: .
+    image: bootcamp/ext-e2e:latest
+    environment:
+      - CI=true
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    shm_size: 2gb

@@ -1,0 +1,17 @@
+{
+  "name": "task-manager-extension",
+  "version": "2.0.0",
+  "description": "Extensão para gerenciar tarefas com integração ao Google Agenda.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-extension.mjs",
+    "test:e2e": "playwright test --reporter=list,html",
+    "test": "npm run build && npm run test:e2e",
+    "ci": "npm ci && npm run test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "archiver": "^7.0.0"
+  },
+  "author": "Lucas Amaral"
+}
