@@ -14,8 +14,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      
       - name: Instalar deps
-        run: npm ci
+        run: npm install
+
+
       - name: Instalar Playwright
         run: npx playwright install --with-deps chromium
       - name: Build extensão
